@@ -1,0 +1,148 @@
+function main() 
+{
+	/*
+	Credit Gunzmo Dont EDIT!! unless you know what you are doing!!
+	This is not a bot script its for the LOADER TO WORK, if you change anything you might break the loader!
+	*/
+	include("json2.js");
+	include("OOG.js");
+	include("common/misc.js");
+	load("tools/heartbeat.js");
+	D2Bot.init();
+	var handle,isUp = "no",defineOnce = false,
+		checkIngameOnce = false,account, password, 
+		state, location, currentRealm,
+		control,chars,msgs,text,
+		charArray = ["","","","","","","",""];
+
+ 	this.msgHandler = function (mode, msg)
+ 	{
+ 		msgs = msg.split(";");
+ 		switch (msgs[0])
+ 		{
+ 			case "1":
+ 			print("Got Message: "+msg);
+ 			print("Looking for active realm");
+ 			control = getControl(6, 264, 391, 272, 25);
+ 			if (control) {
+					switch (control.text.split(getLocaleString(11049).substring(0, getLocaleString(11049).length - 2))[1]) {
+					case "U.S. EAST":
+						currentRealm = 1;
+						break;
+					case "U.S. WEST":
+						currentRealm = 0;
+
+						break;
+					case "ASIA":
+						currentRealm = 2;
+
+						break;
+					case "EUROPE":
+						currentRealm = 3;
+						break;
+					}
+				}
+				print("MSG: [2:" +currentRealm+ "] Sent");
+				D2Bot.sendMsg("2;"+currentRealm);
+ 			break;
+ 			case "2":
+ 				print("Header: " + msgs[1]);
+ 				ControlAction.click(6, 264, 391, 272, 25);
+ 				ControlAction.click(4, 257, 500, 292, 160, 403, 350 + msgs[1] * 25)
+				ControlAction.click(6, 281, 538, 96, 32);
+				print("Realm Set!");
+ 			break;
+ 			case "3":
+	 			delay(1000)
+	 			print("Reqets for Bnet");
+	 			ControlAction.click(6, 264, 366, 272, 35);
+ 			break;
+ 			case "4":
+ 				print("got: ["+msg+"]");
+	 			ControlAction.setText(1, 322, 342, 162, 19, msgs[1]);
+				ControlAction.setText(1, 322, 396, 162, 19, msgs[2]);
+				ControlAction.click(6, 264, 484, 272, 35);
+				print("Login!");
+ 			break;
+ 			case "5":
+ 			//SelectChar!
+ 			print(msgs[1]);
+ 			control = getControl(4, 37, 178, 200, 92);
+				if (control) {
+					do {
+						text = control.getText();
+
+						if (text instanceof Array && typeof text[1] === "string" && text[1].toLowerCase() === msgs[1].toLowerCase()) {
+							control.click();
+							ControlAction.click(6, 627, 572, 128, 35);
+							break;
+						}
+					} while (control.getNext());
+				}
+ 			break;
+ 			case "6":
+ 			joinGame(msgs[1], msgs[2]);
+ 			break;
+ 			case "7":
+ 			print("Request For CreateGame: Name: [" + msgs[1] + "] Pass: [" + msgs[2] + "]" + " Dif: [" + msgs[3] + "]")
+ 			createGame(msgs[1], msgs[2], msgs[3]);
+ 			break;
+ 		}
+ 	}
+	addEventListener('copydata', this.msgHandler);
+	sendCopyData(null, me.windowtitle, 4, "1");
+	function WriteCharInfo()
+	{
+		D2Bot.sendMsg("100");
+		delay(100);
+		control = getControl(4, 37, 178, 200, 92);
+		for (var i = 0; i < charArray.length; i++) 
+		{
+			delay(100);
+			charArray[i] = control.getText();
+			D2Bot.sendMsg("3;"+ JSON.stringify(charArray[i]));
+			print(charArray[i]);
+			control.getNext();
+			control.getNext();
+		}
+	}
+	while (true) 
+	{
+		delay(100);
+		if(getLocation() == 12)
+		{
+			if (defineOnce == false)
+			{
+				WriteCharInfo();
+				defineOnce = true;
+			}
+		}
+		if (me.ingame && checkIngameOnce == false)
+		{
+			D2Bot.sendMsg("1;10000");
+			checkIngameOnce = true;
+		}
+		if(location != getLocation())
+		{
+			D2Bot.sendMsg("1;" + getLocation());
+			print("Sent:1;"+getLocation())
+			location = getLocation();
+			print(getLocation());
+		}
+		if(getLocation() == 1)
+		{
+			defineOnce = false;
+			checkIngameOnce = false;
+		}
+		if (me.ingame) {
+			isUp = "yes";
+		} else {
+			isUp = "no";
+		}
+	}
+}
+
+				//this.click(6, 627, 572, 128, 35); // Click that char
+				//if (text instanceof Array && typeof text[1] === "string" && text[1].toLowerCase() === info.charName.toLowerCase()) {
+				//control.click();
+				//print(me.getLocation);

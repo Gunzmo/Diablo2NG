@@ -1,0 +1,211 @@
+function main() 
+{
+	/*
+	Credit Gunzmo Dont EDIT!! unless you know what you are doing!!
+	This is not a bot script its for the LOADER TO WORK, if you change anything you might break the loader!
+	*/
+	include("json2.js");
+	include("OOG.js");
+	include("common/misc.js");
+	load("tools/heartbeat.js");
+	D2Bot.init();
+	var handle,isUp = "no",defineOnce = false, i,
+		checkIngameOnce = true, account, password, text,
+		state, location, currentRealm, gameList,
+		control,chars,msgs,text,WasIngame = false,
+		charArray = ["","","","","","","",""];
+
+ 	this.msgHandler = function (mode, msg)
+ 	{
+ 		msgs = msg.split(";");
+ 		switch (msgs[0])
+ 		{
+ 			case "1":
+ 			print("Got Message: "+msg);
+ 			print("Looking for active realm");
+ 			control = getControl(6, 264, 391, 272, 25);
+ 			if (control) {
+					switch (control.text.split(getLocaleString(11049).substring(0, getLocaleString(11049).length - 2))[1]) {
+					case "U.S. EAST":
+						currentRealm = 1;
+						break;
+					case "U.S. WEST":
+						currentRealm = 0;
+						break;
+					case "ASIA":
+						currentRealm = 2;
+						break;
+					case "EUROPE":
+						currentRealm = 3;
+						break;
+					}
+				}
+				print("MSG: [2:" +currentRealm+ "] Sent");
+				D2Bot.sendMsg("2;"+currentRealm);
+ 			break;
+ 			case "2":
+ 				print("Header: " + msgs[1]);
+ 				ControlAction.click(6, 264, 391, 272, 25);
+ 				ControlAction.click(4, 257, 500, 292, 160, 403, 350 + msgs[1] * 25)
+				ControlAction.click(6, 281, 538, 96, 32);
+				print("Realm Set!");
+ 			break;
+ 			case "3":
+	 			delay(1000)
+	 			print("Reqets for Bnet");
+	 			ControlAction.click(6, 264, 366, 272, 35);
+ 			break;
+ 			case "4":
+ 				print("got: ["+msg+"]");
+	 			ControlAction.setText(1, 322, 342, 162, 19, msgs[1]);
+				ControlAction.setText(1, 322, 396, 162, 19, msgs[2]);
+				ControlAction.click(6, 264, 484, 272, 35);
+				print("Login!");
+ 			break;
+ 			case "5":
+ 			//SelectChar!
+ 			print(msgs[1]);
+ 			control = getControl(4, 37, 178, 200, 92);
+				if (control) {
+					do {
+						text = control.getText();
+
+						if (text instanceof Array && typeof text[1] === "string" && text[1].toLowerCase() === msgs[1].toLowerCase()) {
+							control.click();
+							//
+							break;
+						}
+					} while (control.getNext());
+				}
+ 			break;
+ 			case "6":
+ 			joinGame(msgs[1], msgs[2]);
+ 			break;
+ 			case "7":
+ 			print("Request For CreateGame: Name: [" + msgs[1] + "] Pass: [" + msgs[2] + "]" + " Dif: [" + msgs[3] + "]")
+ 			createGame(msgs[1], msgs[2], msgs[3]);
+ 			break;
+ 			case "8":
+ 			print("Got Quit Requst");
+ 			ControlAction.click(6, 693, 490, 80, 20);
+ 			break;
+ 			case "9":
+ 			print("Got Logut Requst");
+ 			ControlAction.click(6, 33, 572, 128, 35);
+ 			break;
+ 			case "10":
+ 			print("Got Logon Request");
+ 			ControlAction.click(6, 627, 572, 128, 35);
+ 			break;
+ 			case "11":
+ 			ControlAction.click(6,433,528,168,60);
+ 			delay(50);
+ 			ControlAction.click(6,421,337,96,32);
+ 			WriteCharInfo();
+ 			break;
+ 			case "12":
+			ControlAction.click(6,233,528,168,60);
+			WriteCharInfo();
+ 			break;
+ 			case "13;":
+ 			//TODO CODE THE CHAR CREATION!
+ 			//New CHAR :)
+			// coords:
+			// zon: 100, 280
+			// barb: 400, 280
+			// necro: 300, 290
+			// sin: 200, 280
+			// paladin: 521 260
+			// sorc: 620, 270
+			// druid: 700, 280
+			break;
+			case "14":
+			ControlAction.click(6,533,469,120,20); //create
+			delay(500);
+			case "15": // BnetGames
+			print("Got 15");
+			//gameDetails		[4,609,393,143,194];
+			ControlAction.click(6,652,469,120,20); //join
+			delay(2000);
+			text = ControlAction.getText(4,432,393,160,173); //gameList	
+
+				if (text) {
+					gameList = [];
+
+					for (i = 0; i < text.length; i += 1) {
+						gameList += text[i][0] + "," + text[i][1] + ":";
+					}
+				}
+				D2Bot.sendMsg("44;" + gameList);
+ 			break;
+ 		}
+ 	}
+	addEventListener('copydata', this.msgHandler);
+	function WriteCharInfo()
+	{
+		D2Bot.sendMsg("100;");
+		control = getControl(4, 37, 178, 200, 92);
+		for (var i = 0; i < charArray.length; i++) 
+		{
+			charArray[i] = control.getText();
+			D2Bot.sendMsg("3;"+ JSON.stringify(charArray[i]));
+			print(charArray[i]);
+			control.getNext();
+			control.getNext();
+		}
+		D2Bot.sendMsg("200;");
+	}
+	while (true) 
+	{
+		delay(100);
+		if(location != getLocation())
+		{
+			delay(500);
+			D2Bot.sendMsg("1;" + getLocation());
+			location = getLocation();
+		}
+		if(getLocation() == 18)
+		{
+			ControlAction.click(4,100,580,600,80);
+		}
+		if(getLocation() == 12 && defineOnce == false)
+		{
+			WriteCharInfo();
+			defineOnce = true;
+		}
+		if(getLocation() != 12)
+		{
+			defineOnce = false;
+		}
+		if (me.ingame && !checkIngameOnce)
+		{
+			D2Bot.sendMsg("1;9999;");
+			WasIngame = true;
+			checkIngameOnce = true;
+		} 
+		else if(!me.ingame)
+		{
+			checkIngameOnce = false;
+		}
+		if(getLocation() == 1)
+		{
+			if(WasIngame == true)
+			{
+				D2Bot.sendMsg("4;");
+				WasIngame = false;
+			}
+			defineOnce = false;
+		}
+		if (me.ingame) {
+
+			isUp = "yes";
+		} else {
+			isUp = "no";
+		}
+	}
+}
+
+				//this.click(6, 627, 572, 128, 35); // Click that char
+				//if (text instanceof Array && typeof text[1] === "string" && text[1].toLowerCase() === info.charName.toLowerCase()) {
+				//control.click();
+				//print(me.getLocation);

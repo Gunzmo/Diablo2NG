@@ -1,0 +1,9 @@
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\bin\x86\Release\D2NG BotHelper.exe.config
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\bin\x86\Release\D2NG BotHelper.exe
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\bin\x86\Release\D2NG BotHelper.pdb
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\D2NGBotHelper.Properties.Resources.resources
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\D2NG BotHelper.csproj.GenerateResource.Cache
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\D2NG BotHelper.exe
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\D2NG BotHelper.pdb
+C:\Users\Katuro\documents\visual studio 2013\Projects\Diablo 2 Next Generation\WindowsFormsApplication1\obj\x86\Release\D2NG BotHelper.csprojResolveAssemblyReference.cache
